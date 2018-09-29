@@ -66,15 +66,34 @@ public class ATOMTeleOpYusuf extends LinearOpMode {
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
+        motorLeft = hardwareMap.dcMotor.get("LeftDriveRear");
+        motorRight = hardwareMap.dcMotor.get("RightDriveRear");
+        
+        motorLeft.setDirection(DcMotor.Direction.REVERSE);
+        
+        leftClaw = hardwareMap.servo.get("leftClaw");
+        rightClaw = hardwareMap.servo.get("rightClaw");
         InitializeMotors();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-
+        while (opModeIsActive()) 
+        {
+            motorLeft.setPower(-gamepad1.left_stick_y);
+            motorRight.setPower(-gamepad1.right_stick_y);
+            
+            if(gampad2.a)
+            {
+                leftClaw.setPosition(0.5);
+            }    
+                 
+            if(gamepad2.b)
+            {
+                rightClaw.setPosition(0.5);
+            }    
+            
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
             double rightPower;
