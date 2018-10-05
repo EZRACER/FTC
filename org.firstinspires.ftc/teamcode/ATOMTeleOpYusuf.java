@@ -134,7 +134,8 @@ public class ATOMTeleOp extends LinearOpMode {
         // Reverse the motor that runs backwards when connected directly to the battery
         LeftDriveRear.setDirection(DcMotor.Direction.FORWARD);
         RightDriveRear.setDirection(DcMotor.Direction.REVERSE);
-        LeftClaw.setDirection(DcMotor.Direction.REVERSE);        
+        LeftClaw.setDirection(Servo.Direction.REVERSE);  
+        RightClaw.setDirection(Servo.Direction.FORWARD); 
          }
      public void Drive(double Left, double Right,double timeoutS) {
             runtime.reset();
