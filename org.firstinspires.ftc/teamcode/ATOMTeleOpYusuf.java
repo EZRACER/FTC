@@ -52,9 +52,9 @@ import com.qualcomm.robotcore.util.Range;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@Autonomous(name="ATOMTeleOpYusuf", group="Linear Opmode")
+@Autonomous(name="ATOMTeleOp Java", group="Linear Opmode")
 
-public class ATOMTeleOpYusuf extends LinearOpMode {
+public class ATOMTeleOp extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -66,37 +66,19 @@ public class ATOMTeleOpYusuf extends LinearOpMode {
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        motorLeft = hardwareMap.dcMotor.get("LeftDriveRear");
-        motorRight = hardwareMap.dcMotor.get("RightDriveRear");
-        
-        motorLeft.setDirection(DcMotor.Direction.REVERSE);
-        
-        leftClaw = hardwareMap.servo.get("leftClaw");
-        rightClaw = hardwareMap.servo.get("rightClaw");
+
         InitializeMotors();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) 
-        {
-            motorLeft.setPower(-gamepad1.left_stick_y);
-            motorRight.setPower(-gamepad1.right_stick_y);
-            
-            if(gampad2.a)
-            {
-                leftClaw.setPosition(0.5);
-            }    
-                 
-            if(gamepad2.b)
-            {
-                rightClaw.setPosition(0.5);
-            }    
-            
+        while (opModeIsActive()) {
+
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower;
             double rightPower;
+            float clawPosition;
 
             // Make a Square
             // leftPower  = 0.3;
@@ -118,6 +100,16 @@ public class ATOMTeleOpYusuf extends LinearOpMode {
              // - This requires no math, but it is hard to drive forward slowly and keep straight.
                   leftPower  = -gamepad1.left_stick_y ;
                   rightPower = -gamepad1.right_stick_y ;
+                  clawPosition = gamepad1.right_trigger;
+                  
+                  robot.leftClaw.setPosition(clawPosition);
+                  robot.rightClaw.setPosition(clawPosition);
+                  
+                  if( gamepad1.right_bumper) {
+                   // robot.liftArm.setPower(.1);
+                  }else {
+                   // robot.liftArm.setPower(.1);
+                  }
              
              
              ATOMDriveTrain.PDrive(leftPower,rightPower,0.0); // Move Forward for 5 Seconds
@@ -140,10 +132,9 @@ public class ATOMTeleOpYusuf extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        //LeftDriveRear.setDirection(DcMotor.Direction.FORWARD);
-        //RightDriveRear.setDirection(DcMotor.Direction.REVERSE);
-
-        
+        LeftDriveRear.setDirection(DcMotor.Direction.FORWARD);
+        RightDriveRear.setDirection(DcMotor.Direction.REVERSE);
+        LeftClaw.setDirection(DcMotor.Direction.REVERSE);        
          }
      public void Drive(double Left, double Right,double timeoutS) {
             runtime.reset();
@@ -160,3 +151,5 @@ public class ATOMTeleOpYusuf extends LinearOpMode {
          }
            
 }
+   
+    
